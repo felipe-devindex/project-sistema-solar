@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema Solar com Asteroides</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #000;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        
+        #universe {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite alternate;
+        }
+        
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+        
+        .sun {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, #ffff00, #ff8c00);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 80px #ff4500;
+            z-index: 10;
+        }
+        
+        .orbit {
+            position: absolute;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .planet-container {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform-origin: center;
+        }
+        
+        .planet {
+            border-radius: 50%;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+            margin-bottom: 5px;
+        }
+        
+        .planet-name {
+            color: white;
+            font-size: 12px;
+            text-align: center;
+            text-shadow: 0 0 3px #fff;
+        }
+        
+        .asteroid {
+            position: absolute;
+            background: linear-gradient(45deg, #777, #aaa);
+            border-radius: 20%;
+            transform-origin: center;
+        }
+        
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 10px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+        
+        button {
+            padding: 8px 15px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .title {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 2.5em;
+            text-shadow: 0 0 10px #fff;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+    <div class="title">Sistema Solar</div>
+    
+    <div id="universe">
+        <div class="sun"></div>
+
+        <!-- Órbitas e Planetas -->
+        <div class="orbit" style="width: 150px; height: 150px;"></div>
+        <div class="planet-container mercury-container">
+            <div class="planet" style="width: 8px; height: 8px; background: #a9a9a9;"></div>
+            <div class="planet-name">Mercúrio</div>
+        </div>
+
+        <div class="orbit" style="width: 200px; height: 200px;"></div>
+        <div class="planet-container venus-container">
+            <div class="planet" style="width: 12px; height: 12px; background: #e6c229;"></div>
+            <div class="planet-name">Vênus</div>
+        </div>
+
+        <div class="orbit" style="width: 250px; height: 250px;"></div>
+        <div class="planet-container earth-container">
+            <div class="planet" style="width: 12px; height: 12px; background: #1E90FF;"></div>
+            <div class="planet-name">Terra</div>
+        </div>
+
+        <div class="orbit" style="width: 300px; height: 300px;"></div>
+        <div class="planet-container mars-container">
+            <div class="planet" style="width: 10px; height: 10px; background: #FF4500;"></div>
+            <div class="planet-name">Marte</div>
+        </div>
+
+        <div class="orbit" style="width: 400px; height: 400px;"></div>
+        <div class="planet-container jupiter-container">
+            <div class="planet" style="width: 20px; height: 20px; background: #e3b04b;"></div>
+            <div class="planet-name">Júpiter</div>
+        </div>
+
+        <div class="orbit" style="width: 500px; height: 500px;"></div>
+        <div class="planet-container saturn-container">
+            <div class="planet" style="width: 18px; height: 18px; background: #d4a373;"></div>
+            <div class="planet-name">Saturno</div>
+        </div>
+
+        <div class="orbit" style="width: 600px; height: 600px;"></div>
+        <div class="planet-container uranus-container">
+            <div class="planet" style="width: 15px; height: 15px; background: #7EC0EE;"></div>
+            <div class="planet-name">Urano</div>
+        </div>
+
+        <div class="orbit" style="width: 700px; height: 700px;"></div>
+        <div class="planet-container neptune-container">
+            <div class="planet" style="width: 15px; height: 15px; background: #4682B4;"></div>
+            <div class="planet-name">Netuno</div>
+        </div>
+
+        <!-- Asteroides -->
+        <div id="asteroids-mercury-venus"></div>
+        <div id="asteroids-venus-earth"></div>
+        <div id="asteroids-earth-mars"></div>
+        <div id="asteroids-mars-jupiter"></div>
+        <div id="asteroids-jupiter-saturn"></div>
+        <div id="asteroids-saturn-uranus"></div>
+        <div id="asteroids-uranus-neptune"></div>
+    </div>
+
+    <div class="controls">
+        <button onclick="toggleAnimation()">⏸️ Pausar</button>
+        <button onclick="resetAnimation()">🔄 Reiniciar</button>
+        <button onclick="changeSpeed(0.5)">⏪ Devagar</button>
+        <button onclick="changeSpeed(2)">⏩ Rápido</button>
+    </div>
+
+    <script>
+        const planets = [
+            { name: 'mercury', speed: 0.04, orbitSize: 150 },
+            { name: 'venus', speed: 0.015, orbitSize: 200 },
+            { name: 'earth', speed: 0.01, orbitSize: 250 },
+            { name: 'mars', speed: 0.008, orbitSize: 300 },
+            { name: 'jupiter', speed: 0.002, orbitSize: 400 },
+            { name: 'saturn', speed: 0.0009, orbitSize: 500 },
+            { name: 'uranus', speed: 0.0004, orbitSize: 600 },
+            { name: 'neptune', speed: 0.0001, orbitSize: 700 }
+        ];
+
+        let angle = 0;
+        let isAnimating = true;
+        let animationId;
+        let speed = 1;
+        const asteroids = [];
+
+        function createStars() {
+            const universe = document.getElementById('universe');
+            for (let i = 0; i < 500; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = `${Math.random() * 2}px`;
+                star.style.height = star.style.width;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.opacity = Math.random();
+                star.style.animationDelay = `${Math.random() * 3}s`;
+                universe.appendChild(star);
+            }
+        }
+
+        function createAsteroidGroups() {
+            const groups = [
+                { id: 'asteroids-mercury-venus', min: 175, max: 190, count: 30 },
+                { id: 'asteroids-venus-earth', min: 225, max: 240, count: 30 },
+                { id: 'asteroids-earth-mars', min: 275, max: 290, count: 30 },
+                { id: 'asteroids-mars-jupiter', min: 350, max: 390, count: 50 },
+                { id: 'asteroids-jupiter-saturn', min: 450, max: 490, count: 40 },
+                { id: 'asteroids-saturn-uranus', min: 550, max: 590, count: 40 },
+                { id: 'asteroids-uranus-neptune', min: 650, max: 690, count: 40 }
+            ];
+
+            groups.forEach(group => {
+                const container = document.getElementById(group.id);
+                
+                for (let i = 0; i < group.count; i++) {
+                    const asteroid = document.createElement('div');
+                    asteroid.className = 'asteroid';
+                    const size = 1 + Math.random() * 3;
+                    asteroid.style.width = `${size}px`;
+                    asteroid.style.height = `${size}px`;
+                    
+                    const distance = group.min + Math.random() * (group.max - group.min);
+                    asteroid.orbit = {
+                        x: distance,
+                        y: distance * (0.9 + Math.random() * 0.2),
+                        speed: 0.002 + Math.random() * 0.003,
+                        inclination: (Math.random() - 0.5) * 15
+                    };
+                    asteroid.angle = Math.random() * Math.PI * 2;
+                    container.appendChild(asteroid);
+                    asteroids.push(asteroid);
+                }
+            });
+        }
+
+        function animate() {
+            angle += 0.005 * speed;
+            
+            planets.forEach(planet => {
+                const container = document.querySelector(`.${planet.name}-container`);
+                const x = Math.cos(angle * planet.speed) * (planet.orbitSize / 2);
+                const y = Math.sin(angle * planet.speed) * (planet.orbitSize / 2);
+                container.style.transform = `translate(calc(${x}px + 50vw), calc(${y}px + 50vh))`;
+            });
+
+            asteroids.forEach(asteroid => {
+                asteroid.angle += asteroid.orbit.speed * speed;
+                const x = Math.cos(asteroid.angle) * (asteroid.orbit.x / 2);
+                const y = Math.sin(asteroid.angle) * (asteroid.orbit.y / 2);
+                const inclinedY = y * Math.cos(asteroid.orbit.inclination * Math.PI/180);
+                asteroid.style.transform = `translate(${x}px, ${inclinedY}px)`;
+            });
+            
+            animationId = requestAnimationFrame(animate);
+        }
+
+        function toggleAnimation() {
+            isAnimating = !isAnimating;
+            const button = document.querySelector('.controls button');
+            button.textContent = isAnimating ? '⏸️ Pausar' : '▶️ Continuar';
+            if (isAnimating) animate();
+            else cancelAnimationFrame(animationId);
+        }
+
+        function resetAnimation() {
+            angle = 0;
+        }
+
+        function changeSpeed(factor) {
+            speed *= factor;
+        }
+
+        createStars();
+        createAsteroidGroups();
+        animate();
+    </script>
+</body>
+</html>
