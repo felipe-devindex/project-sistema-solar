@@ -1,4 +1,4 @@
-# 👩🏻‍💻 Felipe-devindex
+## 👨‍💻 Felipe-devindex
 
 **`motivado por desafios `**
 
@@ -127,22 +127,4 @@ Tenho grande interesse na área de tecnologias e linguagens de programação com
 <br/>
 <br/>
 
-### 📊 Estatísticas
 
-<p>
-  <img 
-    align="left" 
-    alt="GitHub Stats" 
-    height="200" 
-    style="padding-right: 10px;" 
-    src=
-  />
-
-<img 
-      align="left" 
-      alt="GitHub Stats" 
-      height="200" 
-      src=
-  />
-
-</p>
